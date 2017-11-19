@@ -5,12 +5,15 @@ import {
   Text,
 } from 'react-native';
 
+import Splash from './Splash';
+
 export default class App extends Component {
   render() {
     return (
       <View
         style={styles.container}
       >
+        <Splash />
       </View>
     );
   }
