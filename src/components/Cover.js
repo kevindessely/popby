@@ -2,17 +2,15 @@ import React from 'react';
 import { StyleSheet, Image, Dimensions } from 'react-native';
 import { View } from '@shoutem/ui';
 
-import COVER from '../../assets/images/cover.jpg';
-
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 
-export default ({ children }) => (
+export default ({ cover }) => (
   <View
     style={styles.container}
   >
     <Image
       resizeMode="cover"
-      source={COVER}
+      source={cover}
       style={styles.background}
     />
   </View>

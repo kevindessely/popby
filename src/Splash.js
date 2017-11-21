@@ -4,12 +4,13 @@ import { Title, Subtitle, View, Text } from '@shoutem/ui';
 
 import Cover from './components/Cover';
 import Button from './components/Button';
+import IMG_SURFING from '../assets/images/surfing.jpg';
 
-export default class App extends Component {
+export default class Splash extends Component {
   render() {
     return (
       <View>
-        <Cover />
+        <Cover cover={IMG_SURFING} />
         <View
           style={StyleSheet.flatten(styles.elementsContainer)}
         >

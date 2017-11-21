@@ -4,8 +4,10 @@ import {
   View,
   Text,
 } from 'react-native';
+import { Examples } from '@shoutem/ui';
 
 import Splash from './Splash';
+import Main from './Main';
 
 export default class App extends Component {
   render() {
@@ -13,7 +15,9 @@ export default class App extends Component {
       <View
         style={styles.container}
       >
-        <Splash />
+        {/* <Splash /> */}
+        <Main />
+        {/* <Examples /> */}
       </View>
     );
   }
