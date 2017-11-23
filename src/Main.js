@@ -1,15 +1,81 @@
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
-import { View, Icon, Title, Subtitle, Image, Tile, Overlay, Heading, Text } from '@shoutem/ui';
+import { StyleSheet, FlatList } from 'react-native';
+import {
+  View, Icon, Title,
+  Subtitle, Image, Tile,
+  Overlay, Heading, Text, Spinner,
+} from '@shoutem/ui';
+
 
 import Button from './components/Button';
 import Cover from './components/Cover';
 import SliderNavigation from './components/SliderNavigation';
 import IMG_LAND_ROVER from '../assets/images/land_rover.jpg';
 import IMG_WINDOW_TO_THE_WORLD from '../assets/images/window_to_the_world.jpg';
+import IMG_SNOW_MOUNTAIN from '../assets/images/snow_mountain.jpg';
+import IMG_ROAD_TRIP from '../assets/images/road_trip.jpg';
 
 export default class Main extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      countries: [
+        {
+          key: 'taiwan',
+          title: 'Taiwan',
+          description: '24 places to visit',
+          image: IMG_WINDOW_TO_THE_WORLD,
+        },
+        {
+          key: 'switzerland',
+          title: 'Switzerland',
+          description: 'unbelievably stunning',
+          image: IMG_SNOW_MOUNTAIN,
+        },
+        {
+          key: 'australia',
+          title: 'Australia',
+          description: 'amazingly fun',
+          image: IMG_ROAD_TRIP,
+        },
+      ],
+    };
+  }
+
+  _onLayout = ({ nativeEvent: { layout } }) => {
+    const { width, height } = layout;
+
+    this.setState({ exploreBody: layout });
+  }
+
+  _renderCountry = ({ item: country, index }) => {
+    const { title, description, image } = country;
+    const { exploreBody: { height, width } } = this.state;
+
+    return (
+      <View
+        style={{ paddingRight: 20, paddingLeft: index === 0 ? 20 : 0 }} // find alternative like `classnames`
+      >
+        <Image
+          style={{height: height, width: width - 80, borderRadius: 10}}
+          source={image}
+        >
+          <View
+            style={{position: 'absolute', bottom: 0, left: 0, paddingLeft: 20, paddingBottom: 20}}
+          >
+              <Tile styleName="clear">
+                <Title style={{color: '#FFFFFF'}}>{ title }</Title>
+                <Subtitle style={{color: '#FFFFFF'}}>{ description }</Subtitle>
+              </Tile>
+          </View>
+        </Image>
+      </View>
+    );
+  }
+
   render() {
+    const { countries, exploreBody } = this.state;
+
     return (
       <View>
         <Cover cover={IMG_LAND_ROVER} />
@@ -33,20 +99,17 @@ export default class Main extends Component {
             </View>
             <View
               style={StyleSheet.flatten(styles.exploreBody)}
+              onLayout={this._onLayout}
             >
-              <Image
-                style={{height: '100%', width: '90%', borderRadius: 10}}
-                source={IMG_WINDOW_TO_THE_WORLD}
-              >
-                <View
-                  style={{position: 'absolute', bottom: 0, left: 0, paddingLeft: 20, paddingBottom: 20}}
-                >
-                    <Tile styleName="clear">
-                      <Title style={{color: '#FFFFFF'}}>Taiwan</Title>
-                      <Subtitle style={{color: '#FFFFFF'}}>24 places to visit</Subtitle>
-                    </Tile>
-                </View>
-              </Image>
+              { !exploreBody && <Spinner />}
+              {
+                exploreBody &&
+                <FlatList
+                  horizontal
+                  data={countries}
+                  renderItem={this._renderCountry}
+                />
+              }
             </View>
             <View
               style={StyleSheet.flatten(styles.exploreFooter)}
